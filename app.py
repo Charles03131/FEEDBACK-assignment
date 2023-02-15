@@ -132,7 +132,7 @@ def process_feedback_form(user_name):
 
         title=form.title.data
         content=form.content.data
-        #username=User.query.get(user_name)
+       
         username=user_name
         
         feedback=Feedback(title=title,content=content,username=username)
@@ -140,7 +140,7 @@ def process_feedback_form(user_name):
         db.session.add(feedback)
         db.session.commit()
 
-        return redirect(f"/users/{user_name}")
+        return redirect(f"/users/{session['user_name']}")
     else:
         return render_template('feedback-form.html',form=form)
         
@@ -162,11 +162,12 @@ def process_feedback_update(feedback_id):
        
 
         feedback=Feedback(title=feedback.title,content=feedback.content)
-        
+  
         db.session.commit()
-        return redirect("/")
+        return redirect(f"/users/{session['user_name']}")  # (f"/users/{user_name}")  this brings up an error message that user_name is undefined
 
-    return render_template("edit-feedback-form.html",form=form,feedback=feedback)
+    else:
+        return render_template("edit-feedback-form.html",form=form,feedback=feedback)
 
 
 
@@ -180,6 +181,6 @@ def delete_feedback(feedback_id):
         db.session.delete(feedback)
         db.session.commit()
         flash("Feedback deleted")
-        return redirect('/')
+        return redirect(f"/users/{session['user_name']}")
     flash("please log in delete and create feedback.  Must be your own post to delete")
     return redirect('/register')
