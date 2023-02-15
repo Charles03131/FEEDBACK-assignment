@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{user.username}}{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/register">FEEDBACK ALL DAY</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/logout">Log Out</a></li>
+        <li><a href='/users/{{user.username}}/feedback/add'>Add Feedback</a></li>
+       
+      </ul>
+    </div>
+  </nav>
+
+<h1>User Profile</h1>
+
+
+{% if 'user_name' in session %}
+
+<h2>Username: {{user.username}}</h2>
+    <h3>Email: {{user.email}}</h3>
+    <h3>First Name: {{user.firstname}}</h3>
+    <h3>Last Name: {{user.lastname}}</h3>
+    <form>
+    <button formmethod="POST" formaction='/users/{{user.username}}/delete'>Delete User</button>
+    </form>
+<h1>User Feedback Given</h1>
+<div class="panel panel-default">
+<div class="container">
+   {% for feedback in user.feedback %}
+
+<p><h2>{{feedback.title}}</h2></p>
+   
+  <blockquote>
+   {{feedback.content}}
+   <footer>by: {{user.username}} </footer>
+   </blockquote>
+   
+<form>
+    {{form.hidden_tag()}}
+    <button formaction='/feedback/{{feedback.id}}/update' formmethod="POST">Edit</button>
+    <button formaction='/feedback/{{feedback.id}}/delete' formmethod="POST">Delete</button>
+</form>
+{% endfor %}
+{% endif %}
+
+</div>
+
+  <!--  <navbar>
+        <li><a href="/logout">Logout</a></li>
+        <li><a href="/">Home</a></li>
+    </navbar>-->
+  
+   
+
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+
+{% block title %}Edit Feedback{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+
+<h1>Edit Feedback</h1>
+</div>
+{% if 'user_name' in session %}
+
+<div class="container">
+<form method="POST" formaction="/feedback/{{ feedback.id }}/update">
+    {{ form.hidden_tag() }} <!--add type=hidden form fields -->
+  
+    {% for field in form
+           if field.widget.input_type != 'hidden' %}
+  
+      <p>
+        {{ field.label }}
+        {{ field }}
+  
+        {% for error in field.errors %}
+          {{ error }}
+        {% endfor %}
+      </p>
+    
+    {% endfor %}
+    {% endif %}
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<br>
+<div class="container">
+
+
+<a href="/login">Log In</a>
+</div>
+
+
+{% endblock %}
